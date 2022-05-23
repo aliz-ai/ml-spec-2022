@@ -6,10 +6,20 @@ Demonstration of an end-to-end Machine Learning pipeline exploiting the [Black F
 
 ### Setup environment
 
-Install the required packages to run the notebooks:
+Please use **Python 3.7** for MLFlow and Sklearn compatibility issues.
+
+Install the required packages and our custom code as a package to run the notebooks. Run following code in the root of the Demo \#2 folder:
 ```sh
-pip install -r requirements.txt
+pip install -r requirements.txt --user
+pip install -e . --user
 ```
+
+
+Run MLFlow server to be able to log models
+```sh
+mlflow ui --backend-store-uri sqlite:///mlflow.db --default-artifact-root ./artifacts --host 0.0.0.0
+```
+
 
 ### Code implementation
 The architecture flow of the solution is fivefold:
