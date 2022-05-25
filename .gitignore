@@ -1,8 +1,9 @@
-.vscode
+.vscode/
 mlflow.db
 artifacts/
 catboost_info/
 mlflow/
+env*/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

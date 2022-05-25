@@ -50,7 +50,7 @@ numeric_features = ["Stay_In_Current_City_Years"]
 
 
 def import_data(
-    file=None, bucket_name="", directory=""
+    file="train", bucket_name="", directory=""
 ):
     """Import train or test data from Cloud Storage
 
@@ -61,8 +61,9 @@ def import_data(
     """
     # data = pd.read_csv("gs://%s/%s/%s.csv" % (bucket_name, directory, file))
     #TODO: Load data from GCP
-    train_data = pd.read_csv('D:/Data/BlackFriday/train.csv')
-    X, y = train_data[features], train_data[target_label]
+    data = pd.read_csv(f"D:/Data/BlackFriday/{file}.csv")
+    X = data[features]
+    y = data[target_label] if target_label in data else None
     return X, y
 
 

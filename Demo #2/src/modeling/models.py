@@ -114,9 +114,6 @@ def train_eval(X, y, model, model_params=None, model_name=None, plot_preds=False
     X_train, X_valid, y_train, y_valid = train_test_split(
         X, y, test_size=0.3, random_state=0
     )
-
-    if model_params:
-        mlflow.log_params(model_params)
    
     with mlflow.start_run(run_name=model_name):
         # Training
@@ -138,15 +135,6 @@ def train_eval(X, y, model, model_params=None, model_name=None, plot_preds=False
         mlflow.log_metrics({"valid_" + key: value for key, value in valid_perf.items()})
         if plot_preds:
             plot(y_valid.values, y_pred, target="Purchase - validation set")
-
-        # Log the sklearn model and register as version 1 if name not exists yet
-        mlflow.sklearn.log_model(
-            sk_model=model,
-            artifact_path="sklearn-model",
-            registered_model_name=model_name
-        )
-
-        # params, metrics, tags, artifacts = fetch_logged_data(run.info.run_id)
 
     return model, valid_perf
 

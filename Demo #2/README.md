@@ -22,7 +22,7 @@ pip install -e .
 
 Run MLFlow server to be able to log models
 ```sh
-mlflow ui --backend-store-uri sqlite:///mlflow.db --default-artifact-root ./artifacts --host 0.0.0.0
+mlflow ui --backend-store-uri sqlite:///mlflow.db --default-artifact-root artifacts --host 0.0.0.0
 ```
 
 
