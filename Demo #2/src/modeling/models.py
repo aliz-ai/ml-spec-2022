@@ -4,7 +4,7 @@ import pandas as pd
 from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
 from sklearn.impute import SimpleImputer
-from sklearn.preprocessing import OneHotEncoder, FunctionTransformer
+from sklearn.preprocessing import OneHotEncoder, FunctionTransformer, StandardScaler
 from sklearn.model_selection import train_test_split
 from catboost import CatBoostRegressor
 from modeling.metrics import eval_reg, plot
@@ -26,7 +26,8 @@ import mlflow
 mlflow.set_tracking_uri("http://localhost:5000")
 
 # enable autologging
-# mlflow.sklearn.autolog()
+mlflow.sklearn.autolog()
+mlflow.xgboost.autolog()
 
 
 def fetch_logged_data(run_id):
@@ -45,6 +46,7 @@ def get_imputed_preprocessor():
     numeric_transformer = Pipeline(
         steps=[
             ("clean", FunctionTransformer(clean, validate=False)),
+            ("standardscaler", StandardScaler()),
             ("imputer", SimpleImputer(strategy="mean")),
         ]
     )
@@ -54,6 +56,36 @@ def get_imputed_preprocessor():
         steps=[
             ("cast", FunctionTransformer(cast, validate=False)),
             ("imputer", SimpleImputer(strategy="constant", fill_value="missing")),
+            ("onehot", OneHotEncoder(handle_unknown="ignore")),
+        ]
+    )
+    categorical_idx = [original_columns.index(feat_) for feat_ in categorical_features]
+
+    # let's index the features by their position
+    preprocessor = ColumnTransformer(
+        transformers=[
+            ("num", numeric_transformer, numeric_idx),
+            ("cat", categorical_transformer, categorical_idx),
+        ]
+    )
+
+    return preprocessor
+
+
+def get_preprocessor_without_imputation():
+    """
+    Create preprocessing pipelines for both numeric and categorical data. Fits tree-based models.
+    """
+    numeric_transformer = Pipeline(
+        steps=[
+            ("clean", FunctionTransformer(clean, validate=False)),
+        ]
+    )
+    numeric_idx = [original_columns.index(feat_) for feat_ in numeric_features]
+
+    categorical_transformer = Pipeline(
+        steps=[
+            ("cast", FunctionTransformer(cast, validate=False)),
             ("onehot", OneHotEncoder(handle_unknown="ignore")),
         ]
     )
@@ -82,6 +114,9 @@ def train_eval(X, y, model, model_params=None, model_name=None, plot_preds=False
     X_train, X_valid, y_train, y_valid = train_test_split(
         X, y, test_size=0.3, random_state=0
     )
+
+    if model_params:
+        mlflow.log_params(model_params)
    
     with mlflow.start_run(run_name=model_name):
         # Training
@@ -89,10 +124,6 @@ def train_eval(X, y, model, model_params=None, model_name=None, plot_preds=False
         t0 = time.time()
         model.fit(X_train, y_train)
         print("   Training time: %.2f s" % (time.time() - t0))
-
-        # Log model parameters using the MLflow APIs
-        if model_params:
-            mlflow.log_params(model_params)
 
         # Evaluate training performance
         y_pred = model.predict(X_train)

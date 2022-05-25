@@ -6,12 +6,17 @@ Demonstration of an end-to-end Machine Learning pipeline exploiting the [Black F
 
 ### Setup environment
 
+TODO:
 Please use **Python 3.7** for MLFlow and Sklearn compatibility issues.
 
 Install the required packages and our custom code as a package to run the notebooks. Run following code in the root of the Demo \#2 folder:
 ```sh
-pip install -r requirements.txt --user
-pip install -e . --user
+conda activate python37
+python -m venv env37
+env37\Scripts\activate
+
+pip install -r requirements.txt
+pip install -e .
 ```
 
 
