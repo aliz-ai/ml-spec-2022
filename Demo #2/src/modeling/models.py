@@ -46,7 +46,6 @@ def get_imputed_preprocessor():
     numeric_transformer = Pipeline(
         steps=[
             ("clean", FunctionTransformer(clean, validate=False)),
-            ("standardscaler", StandardScaler()),
             ("imputer", SimpleImputer(strategy="mean")),
         ]
     )

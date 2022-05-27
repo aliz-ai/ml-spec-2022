@@ -11,7 +11,7 @@ from modeling.models import (
 
 
 def objective(trial):
-    X, y = import_data(file='train')
+    X, y = import_data("train.csv")
     
     # Fix parameters
     params = {

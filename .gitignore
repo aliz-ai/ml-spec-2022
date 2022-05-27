@@ -1,6 +1,7 @@
 .vscode/
 mlflow.db
 artifacts/
+mlruns/
 catboost_info/
 mlflow/
 env*/

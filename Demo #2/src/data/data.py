@@ -50,7 +50,7 @@ numeric_features = ["Stay_In_Current_City_Years"]
 
 
 def import_data(
-    file="train", bucket_name="", directory=""
+    file="train.csv", bucket_path="aliz-ml-spec-2022-data/demo-2"
 ):
     """Import train or test data from Cloud Storage
 
@@ -59,16 +59,15 @@ def import_data(
     :param directory: path of the file folder in the bucket
     :return: Pandas dataframes of the features & label
     """
-    # data = pd.read_csv("gs://%s/%s/%s.csv" % (bucket_name, directory, file))
-    #TODO: Load data from GCP
-    data = pd.read_csv(f"D:/Data/BlackFriday/{file}.csv")
+    data = pd.read_csv("gs://%s/%s" % (bucket_path, file))
     X = data[features]
     y = data[target_label] if target_label in data else None
     return X, y
 
 
 def clean(df):
-    """Clean the values of Stay_In_Current_City_Years variable into a numeric type
+    """
+    Clean the values of Stay_In_Current_City_Years variable into a numeric type
     """
     values_mapping = {"0": 0, "1": 1, "2": 2, "3": 3, "4+": 4}
     df["Stay_In_Current_City_Years"] = df["Stay_In_Current_City_Years"].map(
@@ -78,11 +77,11 @@ def clean(df):
 
 
 def cast(df):
-    """Cast the categorical features into strings
+    """
+    Cast the product categories to into strings
     """
     df['Product_Category_1'] = df['Product_Category_1'].astype(str)
     df['Product_Category_2'] = df['Product_Category_2'].astype(str, errors='ignore')
     df['Product_Category_3'] = df['Product_Category_3'].astype(str, errors='ignore')
     return df
-    # return df.astype(str, errors="ignore")
     
