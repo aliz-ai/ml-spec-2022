@@ -50,7 +50,7 @@ numeric_features = ["Stay_In_Current_City_Years"]
 
 
 def import_data(
-    file="train.csv", bucket_path="aliz-ml-spec-2022-data/demo-2"
+    file="train.csv", bucket_path="aliz-ml-spec-2022/demo-2/data"
 ):
     """Import train or test data from Cloud Storage
 
