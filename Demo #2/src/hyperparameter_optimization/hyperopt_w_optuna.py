@@ -4,7 +4,7 @@ from sklearn.model_selection import train_test_split
 from xgboost import XGBRegressor
 from multiprocessing import cpu_count
 from sklearn.pipeline import Pipeline
-from modeling.models import (
+from modelling.models import (
     get_imputed_preprocessor,
     train_eval
 )

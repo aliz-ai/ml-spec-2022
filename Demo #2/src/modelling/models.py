@@ -4,14 +4,10 @@ import pandas as pd
 from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
 from sklearn.impute import SimpleImputer
-from sklearn.preprocessing import OneHotEncoder, FunctionTransformer, StandardScaler
+from sklearn.preprocessing import OneHotEncoder, FunctionTransformer
 from sklearn.model_selection import train_test_split
-from catboost import CatBoostRegressor
-from modeling.metrics import eval_reg, plot
-from pprint import pprint
+from modelling.metrics import eval_reg, plot
 from data.data import (
-    import_data,
-    features,
     original_columns,
     categorical_features,
     numeric_features,
