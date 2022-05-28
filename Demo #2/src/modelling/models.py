@@ -1,29 +1,34 @@
 import time
+import warnings
+
 import numpy as np
 import pandas as pd
 from sklearn.compose import ColumnTransformer
-from sklearn.pipeline import Pipeline
 from sklearn.impute import SimpleImputer
-from sklearn.preprocessing import OneHotEncoder, FunctionTransformer
 from sklearn.model_selection import train_test_split
-from modelling.metrics import eval_reg, plot
-from data.data import (
-    original_columns,
-    categorical_features,
-    numeric_features,
-    clean,
-    cast
-)
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import FunctionTransformer, OneHotEncoder
 
-import warnings
+from data.data import (
+    cast,
+    categorical_features,
+    clean,
+    numeric_features,
+    original_columns,
+)
+from modelling.metrics import eval_reg, plot
+
 warnings.filterwarnings("ignore")
 
 import mlflow
-mlflow.set_tracking_uri("http://localhost:5000")
 
-# enable autologging
-mlflow.sklearn.autolog()
-mlflow.xgboost.autolog()
+
+def setup_mlflow():
+    mlflow.set_tracking_uri("http://localhost:5000")
+
+    # enable autologging
+    mlflow.sklearn.autolog()
+    mlflow.xgboost.autolog()
 
 
 def fetch_logged_data(run_id):
@@ -106,10 +111,10 @@ def train_eval(X, y, model, model_params=None, model_name=None, plot_preds=False
     """
 
     # Split the data
-    X_train, X_valid, y_train, y_valid = train_test_split(
+    X_train, X_test, y_train, y_test = train_test_split(
         X, y, test_size=0.3, random_state=0
     )
-   
+
     with mlflow.start_run(run_name=model_name):
         # Training
         print("Training...")
@@ -120,18 +125,20 @@ def train_eval(X, y, model, model_params=None, model_name=None, plot_preds=False
         # Evaluate training performance
         y_pred = model.predict(X_train)
         training_perf = eval_reg(y_train, y_pred)
-        mlflow.log_metrics({"train_" + key: value for key, value in training_perf.items()})
+        mlflow.log_metrics(
+            {"train_" + key: value for key, value in training_perf.items()}
+        )
         if plot_preds:
             plot(y_train.values, y_pred, target="Purchase - training set")
 
         # Evaluate validation performance
-        y_pred = model.predict(X_valid)
-        valid_perf = eval_reg(y_valid, y_pred)
-        mlflow.log_metrics({"valid_" + key: value for key, value in valid_perf.items()})
+        y_pred = model.predict(X_test)
+        test_perf = eval_reg(y_test, y_pred)
+        mlflow.log_metrics({"valid_" + key: value for key, value in test_perf.items()})
         if plot_preds:
-            plot(y_valid.values, y_pred, target="Purchase - validation set")
+            plot(y_test.values, y_pred, target="Purchase - validation set")
 
-    return model, valid_perf
+    return model, test_perf
 
 
 def get_feature_importances(model, features):

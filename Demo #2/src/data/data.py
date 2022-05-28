@@ -1,6 +1,5 @@
 import pandas as pd
 
-
 # Columns
 original_columns = [
     "User_ID",
@@ -49,9 +48,7 @@ categorical_features = [
 numeric_features = ["Stay_In_Current_City_Years"]
 
 
-def import_data(
-    file="train.csv", bucket_path="aliz-ml-spec-2022/demo-2/data"
-):
+def import_data(file="train.csv", bucket_path="aliz-ml-spec-2022/demo-2/data"):
     """Import train or test data from Cloud Storage
 
     :param file: filename
@@ -80,8 +77,7 @@ def cast(df):
     """
     Cast the product categories to into strings
     """
-    df['Product_Category_1'] = df['Product_Category_1'].astype(str)
-    df['Product_Category_2'] = df['Product_Category_2'].astype(str, errors='ignore')
-    df['Product_Category_3'] = df['Product_Category_3'].astype(str, errors='ignore')
+    df["Product_Category_1"] = df["Product_Category_1"].astype(str)
+    df["Product_Category_2"] = df["Product_Category_2"].astype(str, errors="ignore")
+    df["Product_Category_3"] = df["Product_Category_3"].astype(str, errors="ignore")
     return df
-    

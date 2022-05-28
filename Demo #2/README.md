@@ -6,9 +6,11 @@ Demonstration of an end-to-end Machine Learning pipeline exploiting the [Black F
 
 ### Setup environment
 
-Please use **Python 3.7** for MLFlow and Sklearn compatibility issues.
+The commands below should be executed in the `Demo #2` folder.
 
-Install the required packages and our custom code as a package to run the notebooks. Run following code in the root of the Demo \#2 folder:
+Use **Python 3.7** for MLFlow and Sklearn compatibility issues.
+
+Install the required packages and our custom code as a package to run the notebooks.
 ```sh
 pip install -r requirements.txt
 pip install -e .
@@ -18,6 +20,13 @@ pip install -e .
 Run MLFlow server to be able to log models
 ```sh
 mlflow ui --backend-store-uri sqlite:///mlflow.db --default-artifact-root ./artifacts --host 0.0.0.0
+```
+
+
+Upload Python package to GCS:
+```sh
+python setup.py sdist --formats=gztar
+gsutil cp dist/gcp-ml-spec-demo-2-0.1.tar.gz gs://aliz-ml-spec-2022/demo-2/package/gcp-ml-spec-demo-2-0.1.tar.gz
 ```
 
 

@@ -5,6 +5,8 @@ mlruns/
 catboost_info/
 mlflow/
 env*/
+temp/
+.DS_Store
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
