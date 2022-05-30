@@ -1,5 +1,3 @@
-maxTrialCount: 20
-parallelTrialCount: 1
 studySpec:
   metrics:
   - metricId: rmse

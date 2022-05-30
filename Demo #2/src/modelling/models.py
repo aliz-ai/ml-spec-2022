@@ -9,13 +9,6 @@ from sklearn.model_selection import train_test_split
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import FunctionTransformer, OneHotEncoder
 
-from data.data import (
-    cast,
-    categorical_features,
-    clean,
-    numeric_features,
-    original_columns,
-)
 from modelling.metrics import eval_reg, plot
 
 warnings.filterwarnings("ignore")
@@ -38,68 +31,6 @@ def fetch_logged_data(run_id):
     tags = {k: v for k, v in data.tags.items() if not k.startswith("mlflow.")}
     artifacts = [f.path for f in client.list_artifacts(run_id, "model")]
     return data.params, data.metrics, tags, artifacts
-
-
-def get_imputed_preprocessor():
-    """
-    Create preprocessing pipelines for both numeric and categorical data. Impute missing values
-    """
-    numeric_transformer = Pipeline(
-        steps=[
-            ("clean", FunctionTransformer(clean, validate=False)),
-            ("imputer", SimpleImputer(strategy="mean")),
-        ]
-    )
-    numeric_idx = [original_columns.index(feat_) for feat_ in numeric_features]
-
-    categorical_transformer = Pipeline(
-        steps=[
-            ("cast", FunctionTransformer(cast, validate=False)),
-            ("imputer", SimpleImputer(strategy="constant", fill_value="missing")),
-            ("onehot", OneHotEncoder(handle_unknown="ignore")),
-        ]
-    )
-    categorical_idx = [original_columns.index(feat_) for feat_ in categorical_features]
-
-    # let's index the features by their position
-    preprocessor = ColumnTransformer(
-        transformers=[
-            ("num", numeric_transformer, numeric_idx),
-            ("cat", categorical_transformer, categorical_idx),
-        ]
-    )
-
-    return preprocessor
-
-
-def get_preprocessor_without_imputation():
-    """
-    Create preprocessing pipelines for both numeric and categorical data. Fits tree-based models.
-    """
-    numeric_transformer = Pipeline(
-        steps=[
-            ("clean", FunctionTransformer(clean, validate=False)),
-        ]
-    )
-    numeric_idx = [original_columns.index(feat_) for feat_ in numeric_features]
-
-    categorical_transformer = Pipeline(
-        steps=[
-            ("cast", FunctionTransformer(cast, validate=False)),
-            ("onehot", OneHotEncoder(handle_unknown="ignore")),
-        ]
-    )
-    categorical_idx = [original_columns.index(feat_) for feat_ in categorical_features]
-
-    # let's index the features by their position
-    preprocessor = ColumnTransformer(
-        transformers=[
-            ("num", numeric_transformer, numeric_idx),
-            ("cat", categorical_transformer, categorical_idx),
-        ]
-    )
-
-    return preprocessor
 
 
 def train_eval(X, y, model, model_params=None, model_name=None, plot_preds=False):
@@ -131,17 +62,18 @@ def train_eval(X, y, model, model_params=None, model_name=None, plot_preds=False
         if plot_preds:
             plot(y_train.values, y_pred, target="Purchase - training set")
 
-        # Evaluate validation performance
+        # Evaluate test performance
         y_pred = model.predict(X_test)
         test_perf = eval_reg(y_test, y_pred)
         mlflow.log_metrics({"valid_" + key: value for key, value in test_perf.items()})
         if plot_preds:
-            plot(y_test.values, y_pred, target="Purchase - validation set")
+            plot(y_test.values, y_pred, target="Purchase - test set")
 
-    return model, test_perf
+    return model, training_perf, test_perf
 
 
 def get_feature_importances(model, features):
+    """Get feature importances of a Catboost model"""
     feature_importances = pd.DataFrame(
         [model.feature_importances_, np.arange(len(features))],
         index=["importance", "index_position"],

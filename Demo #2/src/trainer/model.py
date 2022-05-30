@@ -35,10 +35,12 @@ def train_and_evaluate(hparams):
         X, y, test_size=0.3, random_state=0
     )
 
-    model = Pipeline(steps=[
-        ("preprocessor", get_imputed_preprocessor()),
-        ("regressor", XGBRegressor(**hparams)),
-    ])
+    model = Pipeline(
+        steps=[
+            ("preprocessor", get_imputed_preprocessor()),
+            ("regressor", XGBRegressor(**hparams)),
+        ]
+    )
 
     # Train & evaluate in cross-validation fashion
     rmse_scorer = make_scorer(_RMSE, greater_is_better=False)
