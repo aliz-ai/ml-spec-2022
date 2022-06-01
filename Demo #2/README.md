@@ -25,8 +25,9 @@ mlflow ui --backend-store-uri sqlite:///mlflow.db --default-artifact-root ./arti
 
 Upload Python package to GCS:
 ```sh
+cd vertex_ai_training
 python setup.py sdist --formats=gztar
-gsutil cp dist/gcp-ml-spec-demo-2-0.1.tar.gz gs://aliz-ml-spec-2022/demo-2/package/gcp-ml-spec-demo-2-0.1.tar.gz
+gsutil cp dist/trainer-0.1.tar.gz gs://aliz-ml-spec-2022/demo-2/package/trainer-0.1.tar.gz
 ```
 
 

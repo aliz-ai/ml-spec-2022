@@ -1,11 +1,12 @@
-from collections import defaultdict
 import warnings
+from collections import defaultdict
+
 import pandas as pd
+from sklearn.base import BaseEstimator, TransformerMixin
 from sklearn.compose import ColumnTransformer
 from sklearn.impute import SimpleImputer
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import FunctionTransformer, OneHotEncoder
-from sklearn.base import BaseEstimator, TransformerMixin
 
 from data.data import (
     cast,

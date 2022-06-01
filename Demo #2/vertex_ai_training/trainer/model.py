@@ -1,23 +1,64 @@
+import json
 import time
 import warnings
-import json
 
+import joblib
 import numpy as np
 from google.cloud import storage
-import joblib
+from sklearn.compose import ColumnTransformer
+from sklearn.impute import SimpleImputer
 from sklearn.metrics import make_scorer
 from sklearn.model_selection import cross_validate, train_test_split
 from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import FunctionTransformer, OneHotEncoder
 from xgboost import XGBRegressor
 
-from data.data import import_data
-from modelling.models import get_imputed_preprocessor
-from modelling.metrics import _RMSE, eval_reg
+from trainer.data import (
+    import_data,
+    clean,
+    original_columns,
+    numeric_features,
+    cast,
+    categorical_features,
+)
+from trainer.metrics import _RMSE, eval_reg
 
 warnings.filterwarnings("ignore")
 
 
 n_folds = 5
+
+
+def get_constant_imputed_preprocessor():
+    """
+    Create preprocessing pipelines for both numeric and categorical data. Impute missing values
+    """
+    numeric_transformer = Pipeline(
+        steps=[
+            ("clean", FunctionTransformer(clean, validate=False)),
+            ("imputer", SimpleImputer(strategy="mean")),
+        ]
+    )
+    numeric_idx = [original_columns.index(feat_) for feat_ in numeric_features]
+
+    categorical_transformer = Pipeline(
+        steps=[
+            ("cast", FunctionTransformer(cast, validate=False)),
+            ("imputer", SimpleImputer(strategy="constant", fill_value="missing")),
+            ("onehot", OneHotEncoder(handle_unknown="ignore")),
+        ]
+    )
+    categorical_idx = [original_columns.index(feat_) for feat_ in categorical_features]
+
+    # let's index the features by their position
+    preprocessor = ColumnTransformer(
+        transformers=[
+            ("num", numeric_transformer, numeric_idx),
+            ("cat", categorical_transformer, categorical_idx),
+        ]
+    )
+
+    return preprocessor
 
 
 def train_and_evaluate(hparams):
@@ -37,7 +78,7 @@ def train_and_evaluate(hparams):
 
     model = Pipeline(
         steps=[
-            ("preprocessor", get_imputed_preprocessor()),
+            ("preprocessor", get_constant_imputed_preprocessor()),
             ("regressor", XGBRegressor(**hparams)),
         ]
     )

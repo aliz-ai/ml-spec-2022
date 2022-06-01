@@ -1,9 +1,12 @@
 from math import sqrt
 
+import matplotlib.pyplot as plt
 import pandas as pd
+import seaborn as sns
 from scipy.stats import pearsonr
 from sklearn.metrics import (
     explained_variance_score,
+    max_error,
     mean_absolute_error,
     mean_squared_error,
     mean_squared_log_error,
@@ -11,6 +14,8 @@ from sklearn.metrics import (
     r2_score,
 )
 
+sns.set(rc={"figure.figsize": (12, 9)})
+sns.set(style="darkgrid")
 
 # low-level metrics
 def _RMSE(y_true, y_pred):
@@ -29,10 +34,24 @@ def eval_reg(y_true, y_pred):
         #'MSLE': mean_squared_log_error,
         "MedAE": median_absolute_error,
         "explained_variance": explained_variance_score,
+        "max_error": max_error,
         "R2": r2_score,
         "r2": _r2,
     }
     metrics = {}
     for k, v in evaluation.items():
         metrics[k] = v(y_true, y_pred)
-    return pd.DataFrame.from_dict(metrics, orient="index", columns=["metric value"])
+    return metrics
+
+
+def plot(y_true, y_pred, target=None):
+    N = len(y_true)
+    df_GT = pd.DataFrame([y_true, ["groundtruth"] * N], index=[target, "nature"]).T
+    df_pred = pd.DataFrame([y_pred, ["prediction"] * N], index=[target, "nature"]).T
+    df = pd.concat([df_GT, df_pred], axis=0)
+
+    for label_, df_ in df.groupby("nature"):
+        sns.distplot(df_[target], hist=False, rug=False, label=label_)
+
+    plt.title("{} - groundtruth vs. prediction".format(target))
+    plt.show()
