@@ -8,13 +8,8 @@ from sklearn.impute import SimpleImputer
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import FunctionTransformer, OneHotEncoder
 
-from data.data import (
-    cast,
-    categorical_features,
-    clean,
-    numeric_features,
-    original_columns,
-)
+from data.data import (cast, categorical_features, clean, numeric_features,
+                       original_columns)
 
 warnings.filterwarnings("ignore")
 

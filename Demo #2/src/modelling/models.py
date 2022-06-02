@@ -1,6 +1,8 @@
+import os
 import time
 import warnings
 
+import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 from sklearn.model_selection import train_test_split
@@ -42,6 +44,9 @@ def train_eval(X, y, model, model_params=None, model_name=None, plot_preds=False
         X, y, test_size=0.3, random_state=0
     )
 
+    imgs_path = "../imgs/kde_fitting"
+    os.makedirs(imgs_path, exist_ok=True)
+
     with mlflow.start_run(run_name=model_name):
         # Training
         print("Training...")
@@ -56,14 +61,14 @@ def train_eval(X, y, model, model_params=None, model_name=None, plot_preds=False
             {"train_" + key: value for key, value in training_perf.items()}
         )
         if plot_preds:
-            plot(y_train.values, y_pred, target="Purchase - training set")
+            plot(y_train.values, y_pred, target="Purchase - training set", save_path=f"{imgs_path}/{model_name}_train_kde.jpg")
 
         # Evaluate test performance
         y_pred = model.predict(X_test)
         test_perf = eval_reg(y_test, y_pred)
         mlflow.log_metrics({"valid_" + key: value for key, value in test_perf.items()})
         if plot_preds:
-            plot(y_test.values, y_pred, target="Purchase - test set")
+            plot(y_test.values, y_pred, target="Purchase - test set", save_path=f"{imgs_path}/{model_name}_test_kde.jpg")
 
     return model, training_perf, test_perf
 

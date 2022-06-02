@@ -4,15 +4,10 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
 from scipy.stats import pearsonr
-from sklearn.metrics import (
-    explained_variance_score,
-    max_error,
-    mean_absolute_error,
-    mean_squared_error,
-    mean_squared_log_error,
-    median_absolute_error,
-    r2_score,
-)
+from sklearn.metrics import (explained_variance_score, max_error,
+                             mean_absolute_error, mean_squared_error,
+                             mean_squared_log_error, median_absolute_error,
+                             r2_score)
 
 sns.set(rc={"figure.figsize": (12, 9)})
 sns.set(style="darkgrid")
@@ -44,7 +39,11 @@ def eval_reg(y_true, y_pred):
     return metrics
 
 
-def plot(y_true, y_pred, target=None):
+def metrics2df(metrics):
+    return pd.DataFrame([metrics], index=["Metric value"]).T
+
+
+def plot(y_true, y_pred, target=None, save_path=None):
     N = len(y_true)
     df_GT = pd.DataFrame([y_true, ["groundtruth"] * N], index=[target, "nature"]).T
     df_pred = pd.DataFrame([y_pred, ["prediction"] * N], index=[target, "nature"]).T
@@ -54,4 +53,8 @@ def plot(y_true, y_pred, target=None):
         sns.distplot(df_[target], hist=False, rug=False, label=label_)
 
     plt.title("{} - groundtruth vs. prediction".format(target))
+
+    if save_path:
+        plt.savefig(save_path)
+        
     plt.show()
