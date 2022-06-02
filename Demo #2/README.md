@@ -2,7 +2,12 @@
 ## Capability assesment - Demo #2
 
 ### Assignment
-Demonstration of an end-to-end Machine Learning pipeline exploiting the [Black Friday dataset](https://www.kaggle.com/abhisingh10p14/black-friday) to solve a Kaggle challenge.
+Demonstration of an end-to-end Machine Learning pipeline exploiting the  to solve a Kaggle challenge.
+
+This repository demonstrates the use of Vertex AI to create an end-to-end machine learning pipeline.
+The dataset used in this project is the [Black Friday dataset](https://www.kaggle.com/abhisingh10p14/black-friday), a set of training and testing dataset that collectively describe 783k transactions done on a Black Friday. This dataset contains some basic demographic information about each transacting customer, such as their age, gender and marital status.
+
+We used the train set to train an XGBoost model to predict the amount spent on a particular transaction in the test set.
 
 ### Setup environment
 
@@ -32,22 +37,24 @@ gsutil cp dist/trainer-0.1.tar.gz gs://aliz-ml-spec-2022/demo-2/package/trainer-
 
 
 ### Code implementation
-The architecture flow of the solution is fivefold:
+This solution is composed of five steps:
 - data exploration
 - data validation
 - modelling
 - evaluation
 - model deployment
 
-To do so, run in this order the following notebooks:
+To go through the solution, run the notebooks in the notebook folder in the following order:
 1. EDA & Feature selection
 2. Data validation
 3. Training experiments
 4. Model hyperparameter tuning & evaluation
 5. Model serving & deployment testing
 
-#### Train data - EDA & Feature selection
-This notebook makes the initial sanity checks and runs a SweetViz profiling on the original training data.  
+Ensure that you have correctly set up the environment and started the MLFlow server prior to running the notebooks.
+
+#### EDA & Feature selection
+In this notebook, we performed initial sanity checks and EDA on the training and testing dataset. We used `SweetViz` to perform the EDA steps. It is also in this notebook that we discussed engineering and feature selection.
 
 Engineering and selection of features is discussed here.  
 
@@ -56,6 +63,7 @@ This notebook also makes the same sanity checks and profiling as before on the o
 
 #### Data validation
 Diverse analytics are run using EvidentlyAI to assess any data anomaly across the train/test split.
+In this notebook, we investigated whether or not there was any noticeable differences in the distributions of the variables across the training and test sets. We used [Evidently](https://evidentlyai.com/) to assist with this investigation.
 
 
 #### Training experiments
