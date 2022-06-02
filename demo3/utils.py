@@ -1,5 +1,4 @@
 import requests
-import time
 import numpy as np
 import pandas as pd
 
@@ -12,7 +11,6 @@ from pprint import pprint
 
 from urllib.request import urlopen
 from bs4 import BeautifulSoup
-import feedparser
 
 import concurrent.futures
 import multiprocessing
@@ -24,6 +22,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 sns.set(style="darkgrid")
 
+nlp_client = language_v1.LanguageServiceClient()
 
 def _analyze_sentiments(text):
     """
