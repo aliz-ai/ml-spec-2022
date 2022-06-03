@@ -98,7 +98,7 @@ def _get_title_and_en_url(org_url_link):
         en_url_link = org_url_link
     else:
         en_url_link = _get_en_url(org_url_link)
-    soup_en = BeautifulSoup(urlopen(en_url_link))
+    soup_en = BeautifulSoup(urlopen(en_url_link), features="html.parser")
     title = soup_en.find(id="firstHeading").contents[0]
     return (title, en_url_link)
 
@@ -134,8 +134,11 @@ def analyze_article(text, postprocess = False):
         person_dict = {}
         org_url_link = person.metadata["wikipedia_url"]
         if postprocess:
-            # if postporcess
-            person_dict["name"], person_dict["wikipedia_uri"] = _get_title_and_en_url(org_url_link)
+            try:
+                # some non-latin characters in the original URL might raise an error
+                person_dict["name"], person_dict["wikipedia_uri"] = _get_title_and_en_url(org_url_link)
+            except:
+                pass
         else:
             person_dict["name"] = person.name
             person_dict["wikipedia_uri"] = org_url_link
