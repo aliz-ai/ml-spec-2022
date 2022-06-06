@@ -16,7 +16,7 @@ The script then uploads the analysis results into a BigQuery table, which is in 
 
 ## Code
 
-The development of the solution is presented in the notebook file `SentimentAnalyzer.ipynb`.
+The development of the solution is presented in the notebook file `SentimentAnalyzer.ipynb`. 
 
 This notebook contains the following steps:
 - The creation of BigQuery table that will store the articles and the analysis results
@@ -24,7 +24,7 @@ This notebook contains the following steps:
 - The application of the core function `analyze_article` that applies the Natural Language API and performs sentiment analysis on a given article
 - The uploading of the analysis results on the BigQuery table
 
-Should you want to run the above steps from scratch, please run the notebook from top to bottom.
+Should you want to run the above steps from scratch, please run the notebook from top to bottom after you've installed the dependencies listed in `requirements.txt`.
 
 The accompanying Data Studio dashboard, which visualizes the analysis results, can be found on the following [link](https://datastudio.google.com/u/0/reporting/9f62a4aa-3b5f-4716-b190-10be9a2b9bb2/page/0weuC). 
 
