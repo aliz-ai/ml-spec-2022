@@ -32,7 +32,7 @@ Upload Python package to GCS:
 ```sh
 cd vertex_ai_training
 python setup.py sdist --formats=gztar
-gsutil cp dist/trainer-0.1.tar.gz gs://aliz-ml-spec-2022/demo-2/package/trainer-0.1.tar.gz
+gsutil cp dist/gcp-ml-spec-demo-2-0.1.tar.gz gs://aliz-ml-spec-2022/demo-2/package/gcp-ml-spec-demo-2-0.1.tar.gz
 ```
 
 
@@ -69,10 +69,10 @@ In this notebook, we investigated whether or not there was any noticeable differ
 #### Training experiments
 In this section, we discuss about the preprocessing phase and how to evaluate our trained models' performances.
 <br>A 70%/30% split is made on the original training data in order to make a train/eval split.
-<br>Diverse trainings are run on Vertex AI on the train set and evaluated on the eval set - TODO:
+<br>Diverse trainings are run on Vertex AI on the train set and evaluated on the eval set:
 - a baseline model is chosen and evaluated;
 - diverse ensembles of decision trees are also experimented.
-- for features `Product_Category_2` & `Product_Category_3`, where many values are missing, we comapre using them with and without imputation.
+- for features `Product_Category_2` & `Product_Category_3`, where many values are missing, we comapre using them with constant imputation vs finer-grained imputation.
 
 
 #### Model hyper-parameter tuning & evaluation
@@ -84,7 +84,7 @@ We justify the use of each.
 
 <br>A 70%/30% split is made on the original training data in order to make a train/eval split.
 <br>Full approach is threefold:
-- a 5-fold cross validation is performed on the train split - TODO
+- a 5-fold cross validation is performed on the train split
 - model is trained on the full train set and evaluated on the eval set
 - model is retrained on the full training data (train+eval sets) and serialized for further tasks (e.g. deployment)
 
@@ -96,5 +96,4 @@ The optimised model is served on Vertex AI.
 
 
 ### Report
-TODO:
-The technical whitepaper can be found [here TODO](TODO).
+The technical whitepaper can be found [here](https://docs.google.com/document/d/1ywgj20PG4w81fX8VozKYk4s0pkUJUun6f11x9vhepDw/edit?usp=sharing).

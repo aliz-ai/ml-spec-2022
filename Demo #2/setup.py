@@ -3,13 +3,16 @@ from setuptools import find_packages, setup
 DESCRIPTION = "GCP - ML Specialization - Demo 2"
 
 REQUIRED_PACKAGES = [
-    "google-cloud-storage",
-    "cloudml-hypertune",
-    "joblib",
+    "google-cloud-storage==2.3.0",
+    "cloudml-hypertune==0.1.0.dev6",
+    "google-cloud-aiplatform==1.13.1",
+    "joblib==1.1.0",
     "numpy==1.21.6",
     "pandas==1.3.5",
     "matplotlib==3.5.2",
     "seaborn==0.11.2",
+    "plotly==5.5.0",
+    "mlflow==1.26.0",
     "scikit-learn==1.0.2",
     "mlflow==1.26.0",
     "xgboost==1.6.1",

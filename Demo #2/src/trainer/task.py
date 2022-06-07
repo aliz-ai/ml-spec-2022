@@ -1,9 +1,13 @@
 import argparse
 import datetime
+import warnings
 
 import hypertune
 
-from trainer.model import save_info, save_model, train_and_evaluate
+# from trainer.model import train_and_evaluate, save_model, save_info
+from modelling.models import train_eval_xgb, save_model, save_info
+
+warnings.filterwarnings("ignore")
 
 BUCKET_NAME = "aliz-ml-spec-2022"
 JOB_DIR = "demo-2/modelling_serializations"
@@ -49,7 +53,7 @@ if __name__ == "__main__":
         "n_jobs": -1,
     }
 
-    model, cv_rmse, test_eval_metrics = train_and_evaluate(hparams)
+    model, cv_rmse, test_eval_metrics = train_eval_xgb(hparams)
 
     # serialize
     name = []
