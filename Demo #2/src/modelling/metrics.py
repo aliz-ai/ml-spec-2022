@@ -4,10 +4,15 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
 from scipy.stats import pearsonr
-from sklearn.metrics import (explained_variance_score, max_error,
-                             mean_absolute_error, mean_squared_error,
-                             mean_squared_log_error, median_absolute_error,
-                             r2_score)
+from sklearn.metrics import (
+    explained_variance_score,
+    max_error,
+    mean_absolute_error,
+    mean_squared_error,
+    mean_squared_log_error,
+    median_absolute_error,
+    r2_score,
+)
 
 sns.set(rc={"figure.figsize": (12, 9)})
 sns.set(style="darkgrid")
@@ -56,5 +61,5 @@ def plot(y_true, y_pred, target=None, save_path=None):
 
     if save_path:
         plt.savefig(save_path)
-        
+
     plt.show()

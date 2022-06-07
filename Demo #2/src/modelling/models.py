@@ -2,23 +2,35 @@ import json
 import os
 import time
 import warnings
-import joblib
 
+import joblib
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+from google.cloud import storage
+from sklearn.compose import ColumnTransformer
+from sklearn.impute import SimpleImputer
 from sklearn.metrics import make_scorer
 from sklearn.model_selection import cross_validate, train_test_split
-
-from google.cloud import storage
-from modelling.metrics import _RMSE, eval_reg, plot
-from data.data import import_data
 from sklearn.pipeline import Pipeline
-from modelling.preprocessing import get_constant_imputed_preprocessor
+from sklearn.preprocessing import OneHotEncoder
 from xgboost import XGBRegressor
+
+from data.data import import_data
+from modelling.metrics import _RMSE, eval_reg, plot
+from modelling.preprocessing import get_constant_imputed_preprocessor
+
 warnings.filterwarnings("ignore")
 
 import mlflow
+
+from data.data import (
+    cast,
+    categorical_features,
+    clean,
+    numeric_features,
+    original_columns,
+)
 
 n_folds = 5
 
@@ -70,14 +82,24 @@ def train_eval(X, y, model, model_params=None, model_name=None, plot_preds=False
             {"train_" + key: value for key, value in training_perf.items()}
         )
         if plot_preds:
-            plot(y_train.values, y_pred, target="Purchase - training set", save_path=f"{imgs_path}/{model_name}_train_kde.jpg")
+            plot(
+                y_train.values,
+                y_pred,
+                target="Purchase - training set",
+                save_path=f"{imgs_path}/{model_name}_train_kde.jpg",
+            )
 
         # Evaluate test performance
         y_pred = model.predict(X_test)
         test_perf = eval_reg(y_test, y_pred)
         mlflow.log_metrics({"valid_" + key: value for key, value in test_perf.items()})
         if plot_preds:
-            plot(y_test.values, y_pred, target="Purchase - test set", save_path=f"{imgs_path}/{model_name}_test_kde.jpg")
+            plot(
+                y_test.values,
+                y_pred,
+                target="Purchase - test set",
+                save_path=f"{imgs_path}/{model_name}_test_kde.jpg",
+            )
 
     return model, training_perf, test_perf
 
@@ -91,15 +113,44 @@ def train_eval_xgb(hparams):
     # get training data
     X, y = import_data("train.csv")
 
+    # Move custom transformation out of pipeline, joblib cannot serialize them properly
+    X = clean(X)
+    X = cast(X)
+
     # split the data
     print("Splitting data into 70% / 30% train vs. test sets")
     X_train, X_test, y_train, y_test = train_test_split(
         X, y, test_size=0.3, random_state=0
     )
 
+    numeric_transformer = Pipeline(
+        steps=[
+            # ("clean", FunctionTransformer(clean, validate=False)),
+            ("imputer", SimpleImputer(strategy="mean")),
+        ]
+    )
+    numeric_idx = [original_columns.index(feat_) for feat_ in numeric_features]
+
+    categorical_transformer = Pipeline(
+        steps=[
+            # ("cast", FunctionTransformer(cast, validate=False)),
+            ("imputer", SimpleImputer(strategy="constant", fill_value="missing")),
+            ("onehot", OneHotEncoder(handle_unknown="ignore")),
+        ]
+    )
+    categorical_idx = [original_columns.index(feat_) for feat_ in categorical_features]
+
+    # let's index the features by their position
+    preprocessor = ColumnTransformer(
+        transformers=[
+            ("num", numeric_transformer, numeric_idx),
+            ("cat", categorical_transformer, categorical_idx),
+        ]
+    )
+
     model = Pipeline(
         steps=[
-            ("preprocessor", get_constant_imputed_preprocessor()),
+            ("preprocessor", preprocessor),
             ("regressor", XGBRegressor(**hparams)),
         ]
     )
@@ -152,7 +203,6 @@ def save_info(metrics, name, bucket_name=None, directory=None):
     bucket = storage.Client().bucket(bucket_name)
     blob = bucket.blob("{}/{}".format(directory, name))
     blob.upload_from_string(json.dumps(metrics))
-
 
 
 def get_feature_importances(model, features):

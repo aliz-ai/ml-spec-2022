@@ -5,7 +5,7 @@ import warnings
 import hypertune
 
 # from trainer.model import train_and_evaluate, save_model, save_info
-from modelling.models import train_eval_xgb, save_model, save_info
+from modelling.models import save_info, save_model, train_eval_xgb
 
 warnings.filterwarnings("ignore")
 
