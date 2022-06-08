@@ -17,7 +17,6 @@ Use **Python 3.7** for MLFlow and Sklearn compatibility issues.
 
 Install the required packages and our custom code as a package to run the notebooks.
 ```sh
-pip install -r requirements.txt
 pip install -e .
 ```
 
@@ -89,8 +88,7 @@ We justify the use of each.
 
 
 #### Model serving & deployment testing
-TODO:
-The optimised model is served on Vertex AI.
+The best performing model is served on Vertex AI.
 <br>Deployment is tested via an online prediction request with a subsample data input taken from the original test data.
 
 

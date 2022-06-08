@@ -5,7 +5,8 @@ import warnings
 import hypertune
 
 # from trainer.model import train_and_evaluate, save_model, save_info
-from modelling.models import save_info, save_model, train_eval_xgb
+from modelling.models import save_info, save_model, train_eval_k_fold
+from xgboost.sklearn import XGBRegressor
 
 warnings.filterwarnings("ignore")
 
@@ -53,7 +54,8 @@ if __name__ == "__main__":
         "n_jobs": -1,
     }
 
-    model, cv_rmse, test_eval_metrics = train_eval_xgb(hparams)
+    regressor = XGBRegressor(**hparams)
+    model, cv_rmse, test_eval_metrics = train_eval_k_fold(regressor)
 
     # serialize
     name = []

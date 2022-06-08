@@ -4,7 +4,6 @@ import time
 import warnings
 
 import joblib
-import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 from google.cloud import storage
@@ -14,11 +13,9 @@ from sklearn.metrics import make_scorer
 from sklearn.model_selection import cross_validate, train_test_split
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import OneHotEncoder
-from xgboost import XGBRegressor
 
 from data.data import import_data
 from modelling.metrics import _RMSE, eval_reg, plot
-from modelling.preprocessing import get_constant_imputed_preprocessor
 
 warnings.filterwarnings("ignore")
 
@@ -104,7 +101,7 @@ def train_eval(X, y, model, model_params=None, model_name=None, plot_preds=False
     return model, training_perf, test_perf
 
 
-def train_eval_xgb(hparams):
+def train_eval_k_fold(regressor):
     """Perform a cross validation, a test and a full training for an XGBoost model
 
     :param hparams: XGBoost hyperparameters
@@ -151,7 +148,7 @@ def train_eval_xgb(hparams):
     model = Pipeline(
         steps=[
             ("preprocessor", preprocessor),
-            ("regressor", XGBRegressor(**hparams)),
+            ("regressor", regressor),
         ]
     )
 
