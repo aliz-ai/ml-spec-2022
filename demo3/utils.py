@@ -13,6 +13,7 @@ from ratelimit import limits, sleep_and_retry
 import seaborn as sns
 import matplotlib.pyplot as plt
 from collections.abc import Sequence
+from typing import Tuple
 
 sns.set(style="darkgrid")
 nlp_client = language_v1.LanguageServiceClient()
@@ -78,7 +79,7 @@ def _get_en_url(org_url_link: str) -> str:
         raise IndexError("No English equivalent exists for the given link. Maybe the link is already in English?")
         
         
-def _get_title_and_en_url(org_url_link: str) -> tuple[str, str]:
+def _get_title_and_en_url(org_url_link: str) -> Tuple[str, str]:
     """
     Given a Wikipedia URL, get its English version (if it's not English already) and the English article title
     Args:
