@@ -24,7 +24,7 @@ sns.set(style="darkgrid")
 
 nlp_client = language_v1.LanguageServiceClient()
 
-def _analyze_sentiments(text):
+def _analyze_sentiments(text:str):
     """
     Given a text, return a "sentiments" object that encapsulates the overall and sentence-wise sentiments of the text. 
     Args:
@@ -42,7 +42,7 @@ def _analyze_sentiments(text):
     return sentiments
 
 
-def _extract_persons(text):
+def _extract_persons(text: str):
     """
     Given a text, return a list of all noteworthy people mentioned in the text
     The presence of a Wikipedia page is used as proxy of "noteworthiness"
@@ -66,7 +66,7 @@ def _extract_persons(text):
     return persons
 
 
-def _get_en_url(org_url_link):
+def _get_en_url(org_url_link: str):
     """
     Given a non-English Wikipedia URL, return the English version
     
@@ -75,7 +75,7 @@ def _get_en_url(org_url_link):
     Returns:
         en_url_link (str): the English URL
     """
-    soup = BeautifulSoup(urlopen(org_url_link))
+    soup = BeautifulSoup(urlopen(org_url_link), features="html.parser")
 
     interlanguage_links = soup.select('li.interlanguage-link > a')
     try:
@@ -84,7 +84,7 @@ def _get_en_url(org_url_link):
     except:
         raise IndexError("No English equivalent exists for the given link. Maybe the link is already in English?")
         
-def _get_title_and_en_url(org_url_link):
+def _get_title_and_en_url(org_url_link: str):
     """
     Given a Wikipedia URL, get its English version (if it's not English already) and the English article title
     Args:
@@ -109,7 +109,7 @@ RATE_LIMIT = 60
 
 @sleep_and_retry
 @limits(calls=CALLS, period=RATE_LIMIT)
-def analyze_article(text, postprocess = False): 
+def analyze_article(text: str, postprocess: bool = False): 
     """
     Given a text, analyze it by getting its overall sentiment and extracting the noteworthy individuals mentioned within the text and their details.
     Args:
@@ -152,7 +152,7 @@ def analyze_article(text, postprocess = False):
 
     return article_sentiment, person_dicts
 
-def draw_boxplot_histogram(df, col):
+def draw_boxplot_histogram(df: pd.DataFrame, col: str) -> None:
     """ 
     Given a dataframe `df` containing a numeric column `col`, plot the distribution of `col` using a histogram and a boxplot
     """
