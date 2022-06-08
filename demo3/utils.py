@@ -1,27 +1,20 @@
 import requests
 import numpy as np
 import pandas as pd
-
 from google.cloud import bigquery
 from google.cloud import language_v1
-
-
 from pprint import pprint
-
-
 from urllib.request import urlopen
 from bs4 import BeautifulSoup
-
 import concurrent.futures
 import multiprocessing
 from tqdm import tqdm
-
 from ratelimit import limits, sleep_and_retry
-
 import seaborn as sns
 import matplotlib.pyplot as plt
-sns.set(style="darkgrid")
+from collections.abc import Sequence
 
+sns.set(style="darkgrid")
 nlp_client = language_v1.LanguageServiceClient()
 
 def _analyze_sentiments(text:str):
@@ -66,7 +59,7 @@ def _extract_persons(text: str):
     return persons
 
 
-def _get_en_url(org_url_link: str):
+def _get_en_url(org_url_link: str) -> str:
     """
     Given a non-English Wikipedia URL, return the English version
     
@@ -84,7 +77,8 @@ def _get_en_url(org_url_link: str):
     except:
         raise IndexError("No English equivalent exists for the given link. Maybe the link is already in English?")
         
-def _get_title_and_en_url(org_url_link: str):
+        
+def _get_title_and_en_url(org_url_link: str) -> tuple[str, str]:
     """
     Given a Wikipedia URL, get its English version (if it's not English already) and the English article title
     Args:
@@ -147,10 +141,10 @@ def analyze_article(text: str, postprocess: bool = False):
         sentence_sentiments = [sentence_obj.sentiment.score for sentence_obj in sentiments.sentences if person.name in sentence_obj.text.content]
         person_dict["person_sentiment"] = np.mean(sentence_sentiments)
         person_dict["num_sentences"] = len(sentence_sentiments)
-
         person_dicts.append(person_dict)
 
     return article_sentiment, person_dicts
+
 
 def draw_boxplot_histogram(df: pd.DataFrame, col: str) -> None:
     """ 
