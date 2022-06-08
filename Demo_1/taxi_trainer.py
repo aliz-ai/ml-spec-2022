@@ -68,8 +68,6 @@ def _make_keras_model(hparams: keras_tuner.HyperParameters) -> tf.keras.Model:
   Returns:
     A Keras Model.
   """
-  # The model below is built with Functional API, please refer to
-  # https://www.tensorflow.org/guide/keras/overview for all API options.
   inputs = [keras.layers.Input(shape=(1,), name=f) for f in _FEATURE_KEYS]
   d = keras.layers.concatenate(inputs)
   for _ in range(int(hparams.get('num_layers'))):
@@ -112,8 +110,6 @@ def tuner_fn(fn_args: tfx_v1.components.FnArgs) -> tfx_v1.components.TunerFnResu
       directory=fn_args.working_dir,
       project_name='taxi_tuning')
   schema = tfdv.load_schema_text(fn_args.schema_path)
-
-  #transform_graph = tft.TFTransformOutput(fn_args.transform_graph_path)
 
   train_dataset = _input_fn(
       fn_args.train_files,
