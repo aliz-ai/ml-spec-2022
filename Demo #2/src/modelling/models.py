@@ -122,7 +122,6 @@ def train_eval_k_fold(regressor):
 
     numeric_transformer = Pipeline(
         steps=[
-            # ("clean", FunctionTransformer(clean, validate=False)),
             ("imputer", SimpleImputer(strategy="mean")),
         ]
     )
@@ -130,7 +129,6 @@ def train_eval_k_fold(regressor):
 
     categorical_transformer = Pipeline(
         steps=[
-            # ("cast", FunctionTransformer(cast, validate=False)),
             ("imputer", SimpleImputer(strategy="constant", fill_value="missing")),
             ("onehot", OneHotEncoder(handle_unknown="ignore")),
         ]

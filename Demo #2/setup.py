@@ -13,7 +13,6 @@ REQUIRED_PACKAGES = [
     "seaborn==0.11.2",
     "plotly==5.5.0",
     "mlflow==1.26.0",
-    # "scikit-learn==1.0.1",
     "scikit-learn==0.23.2",
     "mlflow==1.26.0",
     "xgboost==1.5.2",
