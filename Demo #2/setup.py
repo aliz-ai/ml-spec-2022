@@ -17,7 +17,12 @@ REQUIRED_PACKAGES = [
     "mlflow==1.26.0",
     "xgboost==1.5.2",
     "fsspec==2022.5.0",
-    "gcsfs==2022.5.0"
+    "gcsfs==2022.5.0",
+    "sweetviz==2.1.4",
+    "evidently",
+    "optuna==2.10.1",
+    "catboost==1.0.6"
+    
 ]
 
 setup(
