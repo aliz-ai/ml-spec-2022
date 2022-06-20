@@ -18,7 +18,8 @@ from typing import Tuple
 sns.set(style="darkgrid")
 nlp_client = language_v1.LanguageServiceClient()
 
-def _analyze_sentiments(text:str):
+
+def _analyze_sentiments(text: str):
     """
     Given a text, return a "sentiments" object that encapsulates the overall and sentence-wise sentiments of the text. 
     Args:
