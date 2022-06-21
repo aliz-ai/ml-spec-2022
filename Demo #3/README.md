@@ -11,12 +11,12 @@ We hereby present a solution, called _SentimentAnalyzer_, that automates the sen
 
 The script then uploads the analysis results into a BigQuery table, which is in turn connected to a Data Studio dashboard that visualizes these results. 
 
-![Architecture Diagram](SentimentAnalyzer_diagram.png "Architecture Diagram")
+![Architecture Diagram](./imgs/SentimentAnalyzer_diagram.png "Architecture Diagram")
 
 
 ## Code
 
-The development of the solution is presented in the notebook file [`SentimentAnalyzer.ipynb`](https://github.com/aliz-ai/ml-spec-2022/blob/demo3/demo3/SentimentAnalyzer.ipynb). 
+The development of the solution is presented in the notebook file [`SentimentAnalyzer.ipynb`](./notebooks/SentimentAnalyzer.ipynb). 
 
 This notebook contains the following steps:
 - The creation of BigQuery table that will store the articles and the analysis results
@@ -24,7 +24,7 @@ This notebook contains the following steps:
 - The application of the core function `analyze_article` that applies the Natural Language API and performs sentiment analysis on a given article
 - The uploading of the analysis results on the BigQuery table
 
-Should you want to run the above steps from scratch, please run the [notebook](https://github.com/aliz-ai/ml-spec-2022/blob/demo3/demo3/SentimentAnalyzer.ipynb) from top to bottom after you've installed the dependencies listed in [`requirements.txt`](https://github.com/aliz-ai/ml-spec-2022/blob/demo3/demo3/requirements.txt).
+Should you want to run the above steps from scratch, please run the [notebook](./notebooks/SentimentAnalyzer.ipynb) from top to bottom after you've installed the source code with `pip install -e .`. 
 
 The accompanying Data Studio dashboard, which visualizes the analysis results, can be found on the following [link](https://datastudio.google.com/u/0/reporting/9f62a4aa-3b5f-4716-b190-10be9a2b9bb2/page/0weuC). 
 
