@@ -34,7 +34,7 @@ def _get_hyperparameters() -> keras_tuner.HyperParameters:
   hp = keras_tuner.HyperParameters()
     
   hp.Choice('learning_rate', [1e-2, 1e-3], default=1e-2)
-  hp.Int('num_layers', 1, 3, default=2)
+  hp.Int('num_layers', 1, 6, default=2)
   return hp
 
 
