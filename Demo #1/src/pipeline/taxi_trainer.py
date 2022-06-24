@@ -78,7 +78,7 @@ def _make_keras_model(hparams: keras_tuner.HyperParameters) -> tf.keras.Model:
   model.compile(
       optimizer=keras.optimizers.Adam(hparams.get('learning_rate')),
       loss=tf.keras.losses.MeanSquaredError(),
-      metrics=[tf.keras.metrics.MeanSquaredError(name='rmse')])
+      metrics=[tf.keras.metrics.RootMeanSquaredError(name='rmse')])
 
   model.summary(print_fn=logging.info)
   return model

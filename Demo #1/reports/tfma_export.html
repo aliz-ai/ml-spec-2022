@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Slicing Metrics</title>
+    <title>Taxi Model Performance</title>
 </head>
 <body>
 
@@ -16,13 +16,55 @@
   "version_major": 2,
   "version_minor": 0,
   "state": {
-    "bb8dc46ff2fe4d689ed68a5cc4b512cc": {
+    "f51f4acff3b542f5bc7d4cdf815a6b67": {
       "model_name": "LayoutModel",
       "model_module": "@jupyter-widgets/base",
       "model_module_version": "1.2.0",
       "state": {}
     },
-    "e215d1e465d64e0486a9d9a2719853db": {
+    "ed8307b3b24f4c228d2d981d1500324c": {
+      "model_name": "SlicingMetricsModel",
+      "model_module": "tensorflow_model_analysis",
+      "model_module_version": "0.39.0",
+      "state": {
+        "_dom_classes": [],
+        "config": {
+          "weightedExamplesColumn": "example_count"
+        },
+        "data": [
+          {
+            "slice": "Overall",
+            "metrics": {
+              "": {
+                "": {
+                  "rmse": {
+                    "doubleValue": 20.87844467163086
+                  },
+                  "loss": {
+                    "doubleValue": 20.87844467163086
+                  },
+                  "mean_squared_error": {
+                    "doubleValue": 20.87844467163086
+                  },
+                  "example_count": {
+                    "doubleValue": 43117.0
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "js_events": [],
+        "layout": "IPY_MODEL_f51f4acff3b542f5bc7d4cdf815a6b67"
+      }
+    },
+    "31807b9a3a2d470fa775113fc73a5b66": {
+      "model_name": "LayoutModel",
+      "model_module": "@jupyter-widgets/base",
+      "model_module_version": "1.2.0",
+      "state": {}
+    },
+    "346fc5cf25f6492895735034c3439d5a": {
       "model_name": "SlicingMetricsModel",
       "model_module": "tensorflow_model_analysis",
       "model_module_version": "0.39.0",
@@ -349,14 +391,17 @@
           }
         ],
         "js_events": [],
-        "layout": "IPY_MODEL_bb8dc46ff2fe4d689ed68a5cc4b512cc"
+        "layout": "IPY_MODEL_31807b9a3a2d470fa775113fc73a5b66"
       }
     }
   }
 }
 </script>
 <script type="application/vnd.jupyter.widget-view+json">
-{"version_major": 2, "version_minor": 0, "model_id": "e215d1e465d64e0486a9d9a2719853db"}
+{"version_major": 2, "version_minor": 0, "model_id": "ed8307b3b24f4c228d2d981d1500324c"}
+</script>
+<script type="application/vnd.jupyter.widget-view+json">
+{"version_major": 2, "version_minor": 0, "model_id": "346fc5cf25f6492895735034c3439d5a"}
 </script>
 
 </body>
