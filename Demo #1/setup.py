@@ -22,7 +22,7 @@ REQUIRED_PACKAGES = [
     "numpy==1.21.6",
     "pandas==1.3.5",
     "proto-plus==1.20.4",
-    "protobuf==3.20.1",
+    "protobuf==5.29.6",
     "sweetviz==2.1.3",
     "tensorboard==2.8.0",
     "tensorflow-data-validation==1.8.0",
