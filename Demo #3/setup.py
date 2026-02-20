@@ -13,7 +13,7 @@ REQUIRED_PACKAGES = [
     "ratelimit==2.2.1",
     "requests==2.27.1",
     "seaborn==0.11.2",
-    "tqdm==4.64.0",
+    "tqdm==4.66.3",
 ]
 
 setup(
