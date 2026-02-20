@@ -10,7 +10,7 @@ REQUIRED_PACKAGES = [
     "google-cloud-core==1.7.2",
     "google-cloud-logging==3.1.1",
     "google-cloud-storage==1.44.0",
-    "keras==2.8.0rc0",
+    "keras==3.13.2",
     "Keras-Preprocessing==1.1.2",
     "keras-tuner==1.1.2",
     "kfp==1.8.12",
