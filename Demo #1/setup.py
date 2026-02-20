@@ -19,7 +19,7 @@ REQUIRED_PACKAGES = [
     "kubernetes==12.0.1",
     "ml-metadata==1.8.0",
     "ml-pipelines-sdk==1.8.0",
-    "numpy==1.21.6",
+    "numpy==1.22.0",
     "pandas==1.3.5",
     "proto-plus==1.20.4",
     "protobuf==3.20.1",
