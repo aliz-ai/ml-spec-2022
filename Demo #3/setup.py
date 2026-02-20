@@ -11,7 +11,7 @@ REQUIRED_PACKAGES = [
     "pandarallel==1.6.1",
     "pandas==1.3.5",
     "ratelimit==2.2.1",
-    "requests==2.27.1",
+    "requests==2.32.4",
     "seaborn==0.11.2",
     "tqdm==4.64.0",
 ]
